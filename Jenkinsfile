@@ -13,6 +13,15 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
+
+	stage('python & pip installation check'){
+	    step {
+	        sh 'sudo apt-get update /
+		sudo apt-get install -y python3/
+		sudo apt-get install -y python3-pip'
+	    }
+	}
+
         
         stage('Install Dependencies') {
             steps {

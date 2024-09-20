@@ -14,24 +14,25 @@ pipeline {
             }
         }
 
-	stage('python and pip installation check'){
-	    step {
-	        sh 'sudo apt-get update /
-		sudo apt-get install -y python3/
-		sudo apt-get install -y python3-pip'
-	    }
-	}
-
+        stage('Python and Pip Installation Check') {
+            steps {
+                sh '''
+                sudo apt-get update
+                sudo apt-get install -y python3
+                sudo apt-get install -y python3-pip
+                '''
+            }
+        }
         
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'  // Python dependencies
+                sh 'pip3 install -r requirements.txt'  // Python dependencies
             }
         }
         
         stage('Test') {
             steps {
-                sh 'python -m unittest discover -s tests'  // Running tests
+                sh 'python3 -m unittest discover -s tests'  // Running tests
             }
         }
         
@@ -62,7 +63,7 @@ pipeline {
     post {
         always {
             // Clean up workspace and Docker environment after build
-            sh 'docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER}'
+            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER}"
             echo 'CI Pipeline finished.'
         }
     }

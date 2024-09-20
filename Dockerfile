@@ -7,7 +7,10 @@ WORKDIR /app
 # Step 3: Copy the requirements.txt file into the container
 COPY requirements.txt .
 
-# Step 4: Install any needed packages specified in requirements.txt
+# step 4.0: Install Pip and upgrade
+RUN python -m pip install --upgrade pip
+
+# Step 4.1: Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Step 5: Copy the rest of the application code into the container

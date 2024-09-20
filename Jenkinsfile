@@ -1,10 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9'  // Python Docker image with pip installed
+        }
+    }
 
     environment {
-        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'  // Your Docker image name
-        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'     // Jenkins credentials ID for Docker Hub
-        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git'  // GitHub repository URL
+        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'
+        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
+        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git'
     }
 
     stages {
@@ -16,16 +20,16 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'  // Python dependencies
+                sh 'pip install -r requirements.txt'  // Install Python dependencies
             }
         }
-        
+
         stage('Test') {
             steps {
-                sh 'python3 -m unittest discover -s tests'  // Running tests
+                sh 'python -m unittest discover -s tests'  // Running tests
             }
         }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -34,7 +38,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -49,7 +53,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             // Clean up workspace and Docker environment after build

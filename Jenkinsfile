@@ -23,11 +23,12 @@ pipeline {
                 sh 'pip3 install --upgrade pip'  // Upgrade pip to the latest version
                     }
             }
-        stage('Install Dependencies') {
+       stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'  // Install Python dependencies
+                sh 'pip3 install --user -r requirements.txt'  // Install Python dependencies in user space
             }
         }
+
 
         stage('Test') {
             steps {

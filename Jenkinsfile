@@ -14,16 +14,6 @@ pipeline {
             }
         }
 
-        stage('Python & Pip Installation Check') {
-            steps {
-                sh '''
-                apt-get update
-                apt-get install -y python3
-                apt-get install -y python3-pip
-                '''
-            }
-        }
-        
         stage('Install Dependencies') {
             steps {
                 sh 'pip3 install -r requirements.txt'  // Python dependencies

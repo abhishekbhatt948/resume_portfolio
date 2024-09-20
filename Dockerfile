@@ -1,5 +1,5 @@
 # Step 1: Use an official Python runtime as a parent image
-FROM python:3.9
+FROM python:3.9-slim
 
 # Step 2: Set the working directory in the container
 WORKDIR /app
@@ -7,13 +7,9 @@ WORKDIR /app
 # Step 3: Copy the requirements.txt file into the container
 COPY requirements.txt .
 
-# Step 4: Upgrade pip to the latest version and check if pip is available
-RUN python -m ensurepip && \
-    python -m pip install --upgrade pip && \
-        pip --version  # This will confirm pip is installed
 
 # Step 4.1: Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Step 5: Copy the rest of the application code into the container
 COPY . .

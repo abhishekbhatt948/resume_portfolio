@@ -20,7 +20,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'sudo pip install -r requirements.txt'  // Install Python dependencies
+                sh 'sudo pip3 install -r requirements.txt'  // Install Python dependencies
             }
         }
 

@@ -8,7 +8,11 @@ WORKDIR /app
 COPY requirements.txt .
 
 # step 4.0: Install Pip and upgrade
-RUN python -m pip install --upgrade pip
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+        && python -m pip install --upgrade pip \
+	    && apt-get clean \
+	        && rm -rf /var/lib/apt/lists/*
 
 # Step 4.1: Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt

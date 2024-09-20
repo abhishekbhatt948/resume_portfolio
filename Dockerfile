@@ -7,6 +7,11 @@ WORKDIR /app
 # Step 3: Copy the requirements.txt file into the container
 COPY requirements.txt .
 
+# Step 4: Upgrade pip to the latest version and check if pip is available
+RUN python -m ensurepip && \
+    python -m pip install --upgrade pip && \
+        pip --version  # This will confirm pip is installed
+
 # Step 4.1: Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 

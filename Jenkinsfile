@@ -1,7 +1,8 @@
-3pipeline {
+pipeline {
     agent {
         docker {
             image 'python:3.9'  // Python Docker image with pip installed
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket to allow Docker commands
         }
     }
 
@@ -20,15 +21,15 @@
     
         stage('Upgrade Pip') {
             steps {
-                sh 'pip3 install --upgrade pip3'  // Upgrade pip to the latest version
-                    }
+                sh 'pip3 install --upgrade pip'  // Upgrade pip to the latest version
             }
-       stage('Install Dependencies') {
+        }
+
+        stage('Install Dependencies') {
             steps {
                 sh 'pip3 install --user -r requirements.txt'  // Install Python dependencies in user space
             }
         }
-
 
         stage('Test') {
             steps {

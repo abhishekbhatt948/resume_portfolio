@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'  // Your Docker image name
@@ -10,61 +10,50 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: "${GIT_REPO}", branch: 'main'
+                git url: "${GIT_REPO}", branch: 'main'  // Checkout code from the repository
             }
         }
 
-        stage('Python and Pip Installation Check') {
+        stage('Install Dependencies') {
             steps {
                 sh '''
                 apt update
-                apt install -y python3
-                apt install -y python3-pip
+                apt install -y python3 python3-pip  // Install Python and pip
+                pip3 install -r requirements.txt  // Install Python dependencies
                 '''
             }
         }
-        
-        stage('Install Dependencies') {
+
+        stage('Run Tests') {
             steps {
-                sh 'pip3 install -r requirements.txt'  // Python dependencies
+                sh 'python3 -m unittest discover -s tests'  // Run tests
             }
         }
-        
-        stage('Test') {
-            steps {
-                sh 'python3 -m unittest discover -s tests'  // Running tests
-            }
-        }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image and tag it
-                    sh "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
+                    sh "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."  // Build Docker image
                 }
             }
         }
-        
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    // Log in to Docker Hub
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
-                        
-                        // Push Docker image to Docker Hub
-                        sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
+                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"  // Log in to Docker Hub
+                        sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"  // Push Docker image to Docker Hub
                     }
                 }
             }
         }
     }
-    
+
     post {
         always {
-            // Clean up workspace and Docker environment after build
-            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER}"
-            echo 'CI Pipeline finished.'
+            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER}"  // Clean up Docker images
+            echo 'CI Pipeline finished.'  // Final message
         }
     }
 }

@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('Python and Pip Installation Check') {
+        stage('Python & Pip Installation Check') {
             steps {
                 sh '''
                 sudo apt-get update

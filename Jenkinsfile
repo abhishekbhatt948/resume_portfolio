@@ -17,7 +17,12 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
-
+    
+        stage('Upgrade Pip') {
+            steps {
+                sh 'pip3 install --upgrade pip'  // Upgrade pip to the latest version
+                    }
+            }
         stage('Install Dependencies') {
             steps {
                 sh 'sudo pip3 install -r requirements.txt'  // Install Python dependencies

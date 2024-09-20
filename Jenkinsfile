@@ -1,9 +1,10 @@
 pipeline {
-   agent any
+    agent any
+
     environment {
-        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'
-        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
-        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git'
+        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'  // Your Docker image name
+        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'     // Jenkins credentials ID for Docker Hub
+        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git'  // GitHub repository URL
     }
 
     stages {
@@ -12,25 +13,29 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
-    
-        // stage('Upgrade Pip') {
+
+        // stage('Python and Pip Installation Check') {
         //     steps {
-        //         sh 'pip3 install --upgrade pip'  // Upgrade pip to the latest version
+        //         sh '''
+        //         sudo apt-get update
+        //         sudo apt-get install -y python3
+        //         sudo apt-get install -y python3-pip
+        //         '''
         //     }
         // }
-
+        
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'  // Install Python dependencies in user space
+                sh 'pip3 install -r requirements.txt'  // Python dependencies
             }
         }
-
+        
         stage('Test') {
             steps {
-                sh 'python -m unittest discover -s tests'  // Running tests
+                sh 'python3 -m unittest discover -s tests'  // Running tests
             }
         }
-
+        
         stage('Build Docker Image') {
             steps {
                 script {
@@ -39,7 +44,7 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -54,7 +59,7 @@ pipeline {
             }
         }
     }
-
+    
     post {
         always {
             // Clean up workspace and Docker environment after build

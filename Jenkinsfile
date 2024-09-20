@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-	stage('python & pip installation check'){
+	stage('python and pip installation check'){
 	    step {
 	        sh 'sudo apt-get update /
 		sudo apt-get install -y python3/

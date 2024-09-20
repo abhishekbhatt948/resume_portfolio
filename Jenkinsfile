@@ -1,5 +1,10 @@
 pipeline {
-    agent any  // Use any available agent
+    agent {
+        docker {
+            image 'python:3.9'  // Use a Python Docker image with pip installed
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket for Docker commands
+        }
+    }
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'  // Your Docker image name
@@ -16,17 +21,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                apt update
-                apt install -y python3 python3-pip  // Install Python and pip
-                pip3 install -r requirements.txt  // Install Python dependencies
-                '''
+                sh 'pip install -r requirements.txt'  // Install Python dependencies
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'python3 -m unittest discover -s tests'  // Run tests
+                sh 'python -m unittest discover -s tests'  // Run tests
             }
         }
 

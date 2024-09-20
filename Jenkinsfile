@@ -1,6 +1,5 @@
 pipeline {
-   any agent {
-   }
+   agent any
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'
         DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'

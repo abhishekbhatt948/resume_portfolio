@@ -45,7 +45,7 @@ pipeline {
             }
         }
         stage('Dockcer installation') {
-            step {
+            steps {
                 // Install docker and run
                 sh 'sudo apt install docker.io'
             } 

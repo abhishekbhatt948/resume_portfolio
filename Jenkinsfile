@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
-        DOCKER_CREDENTIALS_ID = 'DOCKER_CREDENTIALS_ID'  // Your Docker Hub credentials ID
+        // DOCKER_CREDENTIALS_ID is not used here since we're hardcoding
         GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git' // Your Git repository
     }
 
@@ -29,19 +29,17 @@ pipeline {
                 script {
                     // Hardcoded Docker Hub username and password
                     sh "docker login -u 'your_username' -p 'your_password'"
-                    sh "docker push abhishekbhatt948/resume_portfolio:${BUILD_NUMBER}"
+                    sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
                 }
             }
         }
-        }
-        }
     }
 
-        post {
-            always {
-                // Clean up Docker images to free up space
-                sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
-                echo 'CI Pipeline finished.'
-            }
+    post {
+        always {
+            // Clean up Docker images to free up space
+            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
+            echo 'CI Pipeline finished.'
         }
+    }
 }

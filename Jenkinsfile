@@ -42,7 +42,8 @@ pipeline {
                 script {
                     // Update package list and install Docker
                     sh '''
-                    sudo apt-get update
+                    apt-get update
+                    apt-get install sudo
                     sudo apt-get install -y docker.io
                     sudo systemctl start docker
                     sudo systemctl enable docker

@@ -19,7 +19,15 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
-
+        
+         stage('Install Python') {
+            steps {
+                    sh '''
+                    apk add --no-cache python3 py3-pip
+                    ln -sf python3 /usr/bin/python  # Create a symlink if needed
+                    '''
+                }
+         }
         stage('Run Tests') {
             steps {
                 // Run unit tests with unittest

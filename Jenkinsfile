@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    //     docker {
-    //         image 'python:3.9'  // Use a Python Docker image
-    //         args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
-    //     }
-    // }
+        docker {
+            image 'python:3.9'  // Use a Python Docker image
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
+        }
+    }
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'

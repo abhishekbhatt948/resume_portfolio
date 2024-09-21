@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x
+    commands:
+      - echo "Installing dependencies"
+      - pip install -r requirements.txt
+
+  pre_build:
+    commands:
+      - echo "Logging in to Docker Hub"
+      - echo $DOCKER_PASSWORD | docker login -u abhidocker948 -p abhi948@docker
+
+  build:
+    commands:
+      - echo "Building the Docker image"
+      - docker build -t abhidocker948/resume_portfolio:latest .
+
+  post_build:
+    commands:
+      - echo "Pushing the Docker image to Docker Hub"
+      - docker push abhidocker948/resume_portfolio:latest
+
+artifacts:
+  files:
+    - '**/*'

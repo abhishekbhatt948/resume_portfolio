@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
-        DOCKER_CREDENTIALS_ID = abe14a59-a628-456b-895d-f15c545e961c    // Your Docker Hub credentials ID
+        DOCKER_CREDENTIALS_ID = 'DOCKER_CREDENTIALS_ID'  // Your Docker Hub credentials ID
         GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git' // Your Git repository
     }
 

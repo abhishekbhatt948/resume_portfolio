@@ -27,21 +27,23 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    // Use Docker credentials to log in and push the image
+                    // Log in to Docker Hub using stored credentials
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
+                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                         sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
                     }
                 }
             }
         }
-    }
 
-    post {
-        always {
-            // Clean up Docker images to free up space
-            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
-            echo 'CI Pipeline finished.'
         }
     }
+
+    // post {
+    //     always {
+    //         // Clean up Docker images to free up space
+    //         sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
+    //         echo 'CI Pipeline finished.'
+    //     }
+    // }
 }

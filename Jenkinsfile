@@ -35,11 +35,11 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Clean up Docker images to free up space
-            sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
-            echo 'CI Pipeline finished.'
-        }
-    }
+    // post {
+    //     always {
+    //         // Clean up Docker images to free up space
+    //         sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER} || true"
+    //         echo 'CI Pipeline finished.'
+    //     }
+    // }
 }

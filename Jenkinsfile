@@ -1,13 +1,9 @@
 pipeline {
-    agent {
-        docker {
-            image 'yourusername/python-docker:latest' // Your custom image
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket
-        }
-    }
+    agent any // Use any available Jenkins agent (assuming Docker is installed on the agent)
+
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
-        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials' // Your Docker Hub credentials ID
+        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'    // Your Docker Hub credentials ID
         GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git' // Your Git repository
     }
 
@@ -22,7 +18,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image
+                    // Build Docker image using the Docker command directly on the Jenkins agent
                     sh "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
                 }
             }

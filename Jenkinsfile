@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
-        // DOCKER_CREDENTIALS_ID is not used here since we're hardcoding
+        DOCKER_PASS  = 'abhi948@docker'
         GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git' // Your Git repository
     }
 
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Hardcoded Docker Hub username and password
-                    sh "docker login -u 'your_username' -p 'your_password'"
+                    sh "docker login -u 'abhi948docker' -p ${DOCKER_PASS}"
                     sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
                 }
             }

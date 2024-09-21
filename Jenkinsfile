@@ -19,14 +19,7 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
-
         
-        // stage('Install Dependencies') {
-        //     steps {
-        //         // Install dependencies globally
-        //         sh 'pip install -r requirements.txt'
-        //     }
-        // }
         // stage('Install Dependencies') {
         //     steps {
         //         // Install dependencies from requirements.txt
@@ -44,11 +37,18 @@ pipeline {
                 sh 'python3 -m unittest discover -s tests'
             }
         }
-        stage('Dockcer installation') {
+        stage('Docker Installation') {
             steps {
-                // Install docker and run
-                sh 'sudo apt install docker.io'
-            } 
+                script {
+                    // Update package list and install Docker
+                    sh '''
+                    sudo apt-get update
+                    sudo apt-get install -y docker.io
+                    sudo systemctl start docker
+                    sudo systemctl enable docker
+                    '''
+                }
+            }
         }
 
         stage('Build Docker Image') {

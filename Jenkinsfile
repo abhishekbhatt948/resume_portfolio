@@ -1,6 +1,10 @@
 pipeline {
-    agent any // Use any available agent
-
+    agent {
+        docker {
+            image 'yourusername/python-docker:latest' // Your custom image
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket
+        }
+    }
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
         DOCKER_CREDENTIALS_ID = 'dockerhub_credentials' // Your Docker Hub credentials ID

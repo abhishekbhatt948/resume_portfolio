@@ -21,12 +21,12 @@ pipeline {
         }
 
         
-        stage('Install Dependencies') {
-            steps {
-                // Install dependencies globally
-                sh 'pip install -r requirements.txt'
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         // Install dependencies globally
+        //         sh 'pip install -r requirements.txt'
+        //     }
+        // }
         // stage('Install Dependencies') {
         //     steps {
         //         // Install dependencies from requirements.txt

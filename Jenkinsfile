@@ -45,13 +45,6 @@ pipeline {
             }
         }
 
-        stage('Check Docker and Python') {
-             steps {
-                sh 'docker --version'
-                sh 'python3 --version'
-                sh 'pip3 --version'
-                    }
-                }
         stage('Build Docker Image') {
             steps {
                 script {

@@ -1,10 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9'  // Use a Python Docker image
-            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
-        }
-    }
+    agent any
+    //     docker {
+    //         image 'python:3.9'  // Use a Python Docker image
+    //         args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
+    //     }
+    // }
 
     environment {
         DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'
@@ -16,16 +16,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 git url: "${GIT_REPO}", branch: 'main'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                python -m venv venv  # Create a virtual environment
-                . venv/bin/activate   # Activate the virtual environment
-                pip install -r requirements.txt  # Install dependencies
-                '''
             }
         }
 

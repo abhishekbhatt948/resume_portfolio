@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Hardcoded Docker Hub username and password
-                    sh "docker login -u 'abhi948docker' -p ${DOCKER_PASS}"
+                    sh "docker login -u 'abhidocker948' -p ${DOCKER_PASS}"
                     sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
                 }
             }

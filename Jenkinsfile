@@ -1,8 +1,8 @@
 pipeline {
-    agent any
+    agent {
         docker {
             image 'python:3.9'  // Use a Python Docker image
-            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket to run Docker commands inside the container
         }
     }
 
@@ -15,19 +15,33 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Pull code from GitHub
                 git url: "${GIT_REPO}", branch: 'main'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies from requirements.txt
+                sh '''
+                python -m venv venv  # Create virtual environment
+                . venv/bin/activate   # Activate the virtual environment
+                pip install -r requirements.txt  # Install dependencies
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'python -m unittest discover -s tests'  // Run tests
+                // Run unit tests with unittest
+                sh 'python -m unittest discover -s tests'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Build Docker image
                     sh "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
                 }
             }
@@ -36,6 +50,7 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
+                    // Use Docker credentials to log in and push the image
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
                         sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
@@ -47,6 +62,7 @@ pipeline {
 
     post {
         always {
+            // Clean up Docker images to free up space
             sh "docker rmi ${DOCKER_IMAGE}:${BUILD_NUMBER}"
             echo 'CI Pipeline finished.'
         }

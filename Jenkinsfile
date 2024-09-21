@@ -44,6 +44,12 @@ pipeline {
                 sh 'python3 -m unittest discover -s tests'
             }
         }
+        stage('Dockcer installation') {
+            step {
+                // Install docker and run
+                sh 'sudo apt install docker.io'
+            } 
+        }
 
         stage('Build Docker Image') {
             steps {

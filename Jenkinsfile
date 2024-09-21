@@ -20,21 +20,28 @@ pipeline {
             }
         }
 
+        
         stage('Install Dependencies') {
             steps {
-                // Install dependencies from requirements.txt
-                sh '''
-                python -m venv venv  # Create virtual environment
-                . venv/bin/activate   # Activate the virtual environment
-                pip install -r requirements.txt  # Install dependencies
-                '''
+                // Install dependencies globally
+                sh 'pip3 install -r requirements.txt'
             }
         }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         // Install dependencies from requirements.txt
+        //         sh '''
+        //         python -m venv venv  # Create virtual environment
+        //         . venv/bin/activate   # Activate the virtual environment
+        //         pip install -r requirements.txt  # Install dependencies
+        //         '''
+        //     }
+        // }
 
         stage('Run Tests') {
             steps {
                 // Run unit tests with unittest
-                sh 'python -m unittest discover -s tests'
+                sh 'python3 -m unittest discover -s tests'
             }
         }
 

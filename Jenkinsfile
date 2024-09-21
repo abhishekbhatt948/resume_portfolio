@@ -1,15 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest' // Docker-in-Docker
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket
-        }
-    }
+    agent any // Use any available agent
 
     environment {
-        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio'
-        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
-        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git'
+        DOCKER_IMAGE = 'abhishekbhatt948/resume_portfolio' // Your Docker image name
+        DOCKER_CREDENTIALS_ID = 'dockerhub_credentials' // Your Docker Hub credentials ID
+        GIT_REPO = 'https://github.com/abhishekbhatt948/resume_portfolio.git' // Your Git repository
     }
 
     stages {
@@ -19,7 +14,7 @@ pipeline {
                 git url: "${GIT_REPO}", branch: 'main'
             }
         }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {

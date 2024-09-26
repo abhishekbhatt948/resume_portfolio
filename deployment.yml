@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: resume-portfolio
-        image: abhidocker948/resume-portfolio:latest
+        image: abhidocker948/resume_portfolio:latest
         ports:
         - containerPort: 8080
 ---
